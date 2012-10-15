@@ -2,6 +2,7 @@
 # Database needs to be in the same folder location as this script.  Everything will run then.
 # Import modules
 from __future__ import division
+import numpy as np
 import sqlite3 as dbapi
 import string
 import csv
@@ -31,6 +32,37 @@ def select_data(database, fields, table, good_site_field, good_site_code):
     clean_data = cur.fetchall()
     
     return clean_data
+
+# Calculate Euclidean distances to seeds
+def euclid_dist(route_data, seeds):
+    # Select route data
+    for index, route in enumerate (route_data):
+        route_lat = route[1]  # Assuming that the data structure goes route_ID, lat, long
+        route_long = route[2] # Assuming that the data structure goes route_ID, lat, long 
+        distance = 0
+       # For each route, calculate the Euclidean distance to each seed point 
+        for index,row in enumerate(seeds):
+            seed_lat = row[1] # Assuming that the data structure goes seed_ID, lat, long
+            seed_long = row[2] # Assuming that the data structure goes seed_ID, lat, long
+            
+        
+            # Calculate Euclidean distance for route points
+            euclid = math.sqrt((route_lat-seed_lat)**2 + (route_long-seed_long)**2)
+            
+            # Compare distances for shortest distance
+            if distance == 0:
+                euclid = distance
+                seed_id = row[0] # Assuming that the data structure goes seed_ID, lat, long
+            
+            else if euclid < distance:
+                euclid = distance
+                seed_id = row[0] # Assuming that the data structure goes seed_ID, lat, long
+            
+            # Add closest seed point and distance to data set
+            route = route + [seed_id, distance]
+             
+    
+    return route_data
 
 # Write outputs to .csv file 
 def csv_writer(filename, results):
