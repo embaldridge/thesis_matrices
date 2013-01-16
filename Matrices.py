@@ -26,6 +26,7 @@ def select_data(database, fields, table, good_site_field, good_site_code):
     con.text_factory = str
     
     # Query for clean data and insert into array- this code is wrong, but it is the general idea, I think. I need to find out if you can substitute multiple values into a query like I am trying to do, and if so, what the proper syntax is. If I cannot do this, I need to get the clean data from each of these datasets separately.
+    # This could also be done with multiple queries, and this would probably be the best way to do things, as it would be less general, but also easier to check for correctness.
     cur.execute("""SELECT DISTINCT (?, ?, ?) FROM (?)
                    WHERE (?) == (?);""" fields, table, good_site_field, good_site_code)
     
